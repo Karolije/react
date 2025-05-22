@@ -6,6 +6,11 @@ class TasksManager extends React.Component {
     tasks: [],
   };
 
+  intervals = {};
+
+  componentWillUnmount() {
+    Object.values(this.intervals).forEach(clearInterval);
+  }
   handleChange = (e) => {
     console.log("handleChange", e.target.value);
     this.setState({ task: e.target.value });
@@ -35,14 +40,69 @@ class TasksManager extends React.Component {
       body: JSON.stringify(newTask),
     })
       .then((res) => res.json())
-      .then((taskFromServer) => {
+      .then((newTask) => {
         this.setState((state) => ({
-          tasks: [...state.tasks, taskFromServer],
+          tasks: [...state.tasks, newTask],
           task: "",
         }));
       });
   };
+  incrementTime(id) {
+    this.setState((state) => {
+      const newTasks = state.tasks.map((task) => {
+        if (task.id === id) {
+          return { ...task, time: task.time + 1 };
+        }
 
+        return task;
+      });
+
+      return {
+        tasks: newTasks,
+      };
+    });
+  }
+
+  updateTask = (id, newTask) => {
+    const task = this.state.tasks.find((t) => t.id === id);
+    const updatedTask = { ...task, ...newTask };
+
+    fetch(`http://localhost:3005/data/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedTask),
+    })
+      .then((res) => res.json())
+      .then((newTask) => {
+        this.setState((state) => ({
+          tasks: state.tasks.map((t) => (t.id === id ? newTask : t)),
+        }));
+      });
+  };
+  startCounting = (id) => {
+    const task = this.state.tasks.find((t) => t.id === id);
+    const anyTaskRunning = this.state.tasks.some(
+      (t) => t.isRunning && t.id !== id
+    );
+
+    if (task.isRunning) {
+      clearInterval(this.intervals[id]);
+      delete this.intervals[id];
+      this.updateTask(id, { isRunning: false });
+    } else {
+      this.intervals[id] = setInterval(() => this.incrementTime(id), 1000);
+      this.updateTask(id, { isRunning: true });
+    }
+  };
+
+  taskDone = (id) => {
+    clearInterval(this.intervals[id]);
+    this.updateTask(id, { isDone: true, isRunning: false });
+  };
+
+  removeTask = (id) => {
+    this.updateTask(id, { isRemoved: true });
+  };
   render() {
     return (
       <div>
@@ -54,6 +114,32 @@ class TasksManager extends React.Component {
           />
           <button type="submit">Dodaj zadanie</button>
         </form>
+        {this.state.tasks
+          .filter((task) => !task.isRemoved)
+          .map((task) => (
+            <div>
+              <p>{task.name}</p>
+              <p>{task.time}</p>
+              <button
+                onClick={() => this.startCounting(task.id)}
+                disabled={task.isDone}
+              >
+                {task.isRunning ? "Stop" : "Start"}
+              </button>
+              <button
+                disabled={task.isDone}
+                onClick={() => this.taskDone(task.id)}
+              >
+                Zadanie zakończone
+              </button>
+              <button
+                onClick={() => this.removeTask(task.id)}
+                disabled={!task.isDone}
+              >
+                Usuń
+              </button>
+            </div>
+          ))}
       </div>
     );
   }

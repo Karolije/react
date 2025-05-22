@@ -1,17 +1,68 @@
 {
   "data": [
     {
-      "id": 1,
-      "firstName": "Jan",
-      "lastName": "Kowalski"
+      "name": "Sprzątanko",
+      "time": 2,
+      "isRunning": true,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 3
     },
     {
-      "name": "fff",
-      "time": 0,
+      "name": "pranko",
+      "time": 5,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 4
+    },
+    {
+      "name": "dzz",
+      "time": 3,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 5
+    },
+    {
+      "name": "dd",
+      "time": 2,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 6
+    },
+    {
+      "name": "pranie",
+      "time": 5,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 7
+    },
+    {
+      "name": "sprzątanie",
+      "time": 7,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 8
+    },
+    {
+      "name": "pranie",
+      "time": 12,
       "isRunning": false,
       "isDone": false,
       "isRemoved": false,
-      "id": 2
+      "id": 9
+    },
+    {
+      "name": "sprzątanie",
+      "time": 5,
+      "isRunning": false,
+      "isDone": false,
+      "isRemoved": false,
+      "id": 10
     }
   ]
 }
