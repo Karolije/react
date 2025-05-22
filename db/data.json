@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "firstName": "Jan",
+      "lastName": "Kowalski"
+    },
+    {
+      "name": "fff",
+      "time": 0,
+      "isRunning": false,
+      "isDone": false,
+      "isRemoved": false,
+      "id": 2
+    }
+  ]
+}
