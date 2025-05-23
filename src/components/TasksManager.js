@@ -105,8 +105,9 @@ class TasksManager extends React.Component {
   };
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
+      <div className="container">
+        <h1 className="title">Task manager</h1>
+        <form onSubmit={this.handleSubmit} className="formContainer">
           <input
             name="task"
             value={this.state.task}
@@ -114,32 +115,47 @@ class TasksManager extends React.Component {
           />
           <button type="submit">Dodaj zadanie</button>
         </form>
-        {this.state.tasks
-          .filter((task) => !task.isRemoved)
-          .map((task) => (
-            <div>
-              <p>{task.name}</p>
-              <p>{task.time}</p>
-              <button
-                onClick={() => this.startCounting(task.id)}
-                disabled={task.isDone}
+        <div className="taskList">
+          {this.state.tasks
+            .filter((task) => !task.isRemoved)
+            .map((task) => (
+              <div
+                className={`taskItem ${
+                  task.isDone ? "taskDone" : task.isRunning ? "taskRunning" : ""
+                }`}
               >
-                {task.isRunning ? "Stop" : "Start"}
-              </button>
-              <button
-                disabled={task.isDone}
-                onClick={() => this.taskDone(task.id)}
-              >
-                Zadanie zakończone
-              </button>
-              <button
-                onClick={() => this.removeTask(task.id)}
-                disabled={!task.isDone}
-              >
-                Usuń
-              </button>
-            </div>
-          ))}
+                <p className="taskName">{task.name}</p>
+                <p className="taskTime">{task.time} s</p>
+                <div className="taskButtons">
+                  {" "}
+                  <button
+                    onClick={() => this.startCounting(task.id)}
+                    disabled={
+                      task.isDone ||
+                      (!task.isRunning &&
+                        this.state.tasks.some(
+                          (t) => t.isRunning && t.id !== task.id
+                        ))
+                    }
+                  >
+                    {task.isRunning ? "Stop" : "Start"}
+                  </button>
+                  <button
+                    disabled={task.isDone}
+                    onClick={() => this.taskDone(task.id)}
+                  >
+                    Zadanie zakończone
+                  </button>
+                  <button
+                    onClick={() => this.removeTask(task.id)}
+                    disabled={!task.isDone}
+                  >
+                    Usuń
+                  </button>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
     );
   }
