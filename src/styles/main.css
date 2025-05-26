@@ -76,7 +76,7 @@ body {
   .taskName {
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 50px;
     text-align: center;
     color:#333333
   }
@@ -86,7 +86,10 @@ body {
     color: #555;
     margin-bottom: 12px;
   }
-  
+ .taskButtons {
+  display: flex;
+  justify-content: center;
+ } 
   .taskButtons button {
     padding: 8px 12px;
     margin-right: 8px;

@@ -6,13 +6,12 @@ class TasksManager extends React.Component {
     tasks: [],
   };
 
-  intervals = {};
+  interval = null;
 
   componentWillUnmount() {
-    Object.values(this.intervals).forEach(clearInterval);
+    clearInterval(this.interval);
   }
   handleChange = (e) => {
-    console.log("handleChange", e.target.value);
     this.setState({ task: e.target.value });
   };
 
@@ -81,27 +80,30 @@ class TasksManager extends React.Component {
   };
   startCounting = (id) => {
     const task = this.state.tasks.find((t) => t.id === id);
-    const anyTaskRunning = this.state.tasks.some(
-      (t) => t.isRunning && t.id !== id
-    );
 
     if (task.isRunning) {
-      clearInterval(this.intervals[id]);
-      delete this.intervals[id];
+      clearInterval(this.interval);
+      this.interval = null;
       this.updateTask(id, { isRunning: false });
     } else {
-      this.intervals[id] = setInterval(() => this.incrementTime(id), 1000);
+      this.interval = setInterval(() => this.incrementTime(id), 1000);
       this.updateTask(id, { isRunning: true });
     }
   };
 
   taskDone = (id) => {
-    clearInterval(this.intervals[id]);
+    clearInterval(this.interval);
     this.updateTask(id, { isDone: true, isRunning: false });
   };
 
   removeTask = (id) => {
     this.updateTask(id, { isRemoved: true });
+  };
+  formatTime = (seconds) => {
+    const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const s = String(seconds % 60).padStart(2, "0");
+    return `${h}:${m}:${s}`;
   };
   render() {
     return (
@@ -124,8 +126,9 @@ class TasksManager extends React.Component {
                   task.isDone ? "taskDone" : task.isRunning ? "taskRunning" : ""
                 }`}
               >
-                <p className="taskName">{task.name}</p>
-                <p className="taskTime">{task.time} s</p>
+                <p className="taskName">
+                  {task.name}, {this.formatTime(task.time)}
+                </p>
                 <div className="taskButtons">
                   {" "}
                   <button

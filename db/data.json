@@ -2,7 +2,7 @@
   "data": [
     {
       "name": "Sprzątanie",
-      "time": 203,
+      "time": 55,
       "isRunning": false,
       "isDone": false,
       "isRemoved": false,
@@ -23,6 +23,14 @@
       "isDone": false,
       "isRemoved": false,
       "id": 3
+    },
+    {
+      "name": "aaaa",
+      "time": 1,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 4
     }
   ]
 }
