@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "serve -s build",
+    "start": "serve -s build -l $PORT",
     "build": "webpack --mode production"
   },
   "keywords": [],
