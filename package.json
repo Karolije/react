@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --mode development --open",
+    "start": "serve -s build",
     "build": "webpack --mode production"
   },
   "keywords": [],
@@ -25,6 +24,7 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "serve": "^14.2.0"
   }
 }
